@@ -5,7 +5,25 @@ import TheirMessage from './TheirMessage';
 const ChatFeed = (props) => {
     const {chats, activeChat, userName, messages } = props;
 
+    // what does this do?
     const chat = chats && chats[activeChat];
+
+    const renderReadReceipts = (message, isMyMessage) => {
+        // for all the people who read the message
+        // && () what does this do? "if only the person has the read the msessage, render"
+        chat.people.map((person, index) => person.last_read === message.id && (
+            <div 
+                key={`read_${index}`}
+                className="read-receipt"
+                style={{
+                    float: isMyMessage ? 'right' : 'left',
+                    // background of the person 
+                    backgroundImage: `url(${person?.person?.avatar})`
+                }}
+            />
+        ))
+    }
+
 
     const renderMessages = () => {
         const keys = Object.keys(messages);
@@ -25,7 +43,7 @@ const ChatFeed = (props) => {
                         }
                     </div>
                     <div className="read-receipts" style={{marginRight: isMyMessage ? "18px" : "0px", marginLeft: isMyMessage ? "0px" : '68px'}}>
-                        read receipts
+                        {renderReadReceipts(message, isMyMessage)}
                     </div>
                 </div>
             );
